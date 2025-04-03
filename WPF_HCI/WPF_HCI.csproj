@@ -28,4 +28,8 @@
     <Resource Include="new-message.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="icons\" />
+  </ItemGroup>
+
 </Project>

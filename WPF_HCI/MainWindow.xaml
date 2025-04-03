@@ -37,11 +37,11 @@
             <!-- File Menu with Icon -->
             <MenuItem Header="File" Foreground="{StaticResource TextColor}">
                 <MenuItem.Icon>
-                    <Image Source="/file.webp" Width="16" Height="16"/>
+                    <Image Width="16" Height="16" Source="/file.webp"/>
                 </MenuItem.Icon>
                 <MenuItem Header="Exit" Click="Exit_Click" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/exit.png" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/exit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -49,31 +49,31 @@
             <!-- Message Menu with Icon -->
             <MenuItem Header="Message" Foreground="{StaticResource TextColor}">
                 <MenuItem.Icon>
-                    <Image Source="/message.webp" Width="16" Height="16"/>
+                    <Image Width="16" Height="16" Source="/message.webp"/>
                 </MenuItem.Icon>
                 <MenuItem Header="New Static" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/new-message.png" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/new-message.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Edit Static" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/edit.png" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/edit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="New" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/new-message.png" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/new-message.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Edit" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/edit.png" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/edit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Delete" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Source="/delete.webp" Width="16" Height="16"/>
+                        <Image Width="16" Height="16" Source="/delete.webp"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -125,7 +125,7 @@
                              GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" 
                              TextChanged="SearchBox_TextChanged" Background="{StaticResource LightBackgroundColor}" FontFamily="Segoe UI"/>
                     <ComboBox Name="FilterBox" Width="120" Height="25" SelectionChanged="FilterBox_SelectionChanged"
-                        Background="{StaticResource LightBackgroundColor}" Foreground="{StaticResource DarkBackgroundColor}" FontFamily="Segoe UI">
+                    Background="{StaticResource LightBackgroundColor}" Foreground="{StaticResource DarkBackgroundColor}" FontFamily="Segoe UI">
                         <ComboBoxItem Content="All" IsSelected="True" Foreground="{StaticResource DarkBackgroundColor}"/>
                         <ComboBoxItem Content="Unread" Foreground="{StaticResource DarkBackgroundColor}"/>
                         <ComboBoxItem Content="Important" Foreground="{StaticResource DarkBackgroundColor}"/>
