@@ -5,10 +5,9 @@
         xmlns:converters="clr-namespace:WPF_HCI.Converters"
         Title="Email Client" Height="600" Width="1000" MinHeight="400" MinWidth="800"
         FontFamily="Segoe UI">
-
-    <!-- Set the Window background color -->
+    <!-- Window Resources -->
     <Window.Resources>
-        <!-- Define custom colors for a modern dark theme -->
+        <!-- Theme Colors -->
         <SolidColorBrush x:Key="DarkBackgroundColor" Color="#1A1A1A"/>
         <SolidColorBrush x:Key="LightBackgroundColor" Color="#333333"/>
         <SolidColorBrush x:Key="AccentBlueColor" Color="#3A7CA5"/>
@@ -17,30 +16,27 @@
         <SolidColorBrush x:Key="TextGrayColor" Color="#D3D3D3"/>
         <SolidColorBrush x:Key="LightGrayColor" Color="#D3D3D3"/>
         <SolidColorBrush x:Key="BorderColor" Color="#A9A9A9"/>
-
+        <!-- Converter -->
         <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
-
-        <!-- Example color -->
     </Window.Resources>
 
-
     <Grid Background="{StaticResource DarkBackgroundColor}">
-        <!-- Define Row Layout -->
+        <!-- Define the main grid rows -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Row for the image/logo (fixed height) -->
+            <!-- Logo -->
             <RowDefinition Height="Auto"/>
-            <!-- Row for the menu (fixed height) -->
+            <!-- Menu -->
             <RowDefinition Height="*"/>
-            <!-- Row for the main content (fills remaining space) -->
+            <!-- Main Content -->
         </Grid.RowDefinitions>
 
-        <!-- (a) Image: Display the logo in the first row -->
+        <!-- (a) Logo -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <Image Source="logo.png" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="40" Height="40"/>
         </Grid>
 
-        <!-- (b) Menu: Displays the main menu of the application -->
+        <!-- (b) Menu -->
         <Menu Grid.Row="1" Background="{StaticResource LightBackgroundColor}" Foreground="{StaticResource TextColor}">
             <MenuItem Header="File" Foreground="{StaticResource TextColor}">
                 <MenuItem.Icon>
@@ -52,8 +48,6 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
-
-            <!-- Message Menu with Icon -->
             <MenuItem Header="Message" Foreground="{StaticResource TextColor}">
                 <MenuItem.Icon>
                     <Image Width="16" Height="16" Source="/message.webp"/>
@@ -86,29 +80,28 @@
             </MenuItem>
         </Menu>
 
-        <!-- Main Content Area using Grid for dividing columns -->
+        <!-- (c) Main Content Area -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <!-- Sidebar (TreeView) -->
-                <ColumnDefinition Width="4*" />
-                <!-- Email List (ListView) -->
-                <ColumnDefinition Width="5*" />
-                <!-- Email Content (TextBlock) -->
+                <ColumnDefinition Width="1*"/>
+                <!-- Sidebar -->
+                <ColumnDefinition Width="4*"/>
+                <!-- Email List -->
+                <ColumnDefinition Width="5*"/>
+                <!-- Email Content -->
             </Grid.ColumnDefinitions>
 
-            <!-- (b) TreeView: Displays mailboxes and their folders -->
+            <!-- (c1) Sidebar: Mailbox TreeView -->
             <TreeView Name="FolderTree" Grid.Column="0" Margin="5"
-                Background="{StaticResource LightBackgroundColor}"
-                Foreground="{StaticResource TextGrayColor}" FontFamily="Segoe UI"
-                SelectedItemChanged="FolderTree_SelectedItemChanged">
+                      Background="{StaticResource LightBackgroundColor}"
+                      Foreground="{StaticResource TextGrayColor}" FontFamily="Segoe UI"
+                      SelectedItemChanged="FolderTree_SelectedItemChanged">
                 <TreeViewItem Header="Mailbox 1" Foreground="{StaticResource TextColor}">
                     <TreeViewItem Header="Inbox" Tag="Inbox1" Foreground="{StaticResource LightGrayColor}"/>
                     <TreeViewItem Header="Sent" Tag="Sent1" Foreground="{StaticResource LightGrayColor}"/>
                     <TreeViewItem Header="Drafts" Tag="Drafts1" Foreground="{StaticResource LightGrayColor}"/>
                     <TreeViewItem Header="Trash" Tag="Trash1" Foreground="{StaticResource LightGrayColor}"/>
                 </TreeViewItem>
-
                 <TreeViewItem Header="Mailbox 2" Foreground="{StaticResource TextColor}">
                     <TreeViewItem Header="Inbox" Tag="Inbox2" Foreground="{StaticResource LightGrayColor}"/>
                     <TreeViewItem Header="Sent" Tag="Sent2" Foreground="{StaticResource LightGrayColor}"/>
@@ -117,17 +110,15 @@
                 </TreeViewItem>
             </TreeView>
 
-            <!-- Email List Section (Grid instead of DockPanel) -->
+            <!-- (c2) Email List Section -->
             <Grid Grid.Column="1" Margin="5">
-                <!-- Define Rows for Search & Filter and Email List -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Search & Filter Box -->
+                    <!-- Search & Filter -->
                     <RowDefinition Height="*"/>
-                    <!-- ListView (Fills Remaining Space) -->
+                    <!-- Email List -->
                 </Grid.RowDefinitions>
-
-                <!-- (e) Search and Filter: TextBox & ComboBox inside a StackPanel -->
+                <!-- Search and Filter -->
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
                     <TextBox Name="SearchBox" Width="200" Height="25" Text="Search..." Foreground="{StaticResource TextGrayColor}"
                              GotFocus="SearchBox_GotFocus" LostFocus="SearchBox_LostFocus" 
@@ -139,94 +130,58 @@
                         <ComboBoxItem Content="Important" Foreground="{StaticResource DarkBackgroundColor}"/>
                     </ComboBox>
                 </StackPanel>
-
-                <!-- (c) ListView: Displays a list of messages in the selected folder -->
-                <Grid Background="{StaticResource DarkBackgroundColor}">
-                    <!-- Main Content Area using Grid for dividing columns -->
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="4*" />
-                            <ColumnDefinition Width="5*" />
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Email List Section -->
-                        <Grid Grid.Column="1" Margin="5">
-                            <ListView Name="EmailList" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      MouseDoubleClick="EmailList_DoubleClick" Background="{StaticResource LightBackgroundColor}" 
-                      FontFamily="Segoe UI" Foreground="{StaticResource TextColor}" 
-                      SelectionChanged="EmailList_SelectionChanged">
-
-                                <!-- Item Template for Email List -->
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <!-- Bind the Tag to the entire email object if needed -->
-                                        <Border x:Name="EmailBorder" Tag="{Binding}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" Padding="5" Margin="5">
-                                            <StackPanel Orientation="Vertical">
-                                                <!-- Subject -->
-                                                <TextBlock x:Name="SubjectTextBlock" Text="{Binding Subject}" FontWeight="Bold" Margin="0,0,0,5" />
-
-                                                <!-- Sender -->
-                                                <TextBlock x:Name="SenderTextBlock" Text="{Binding Sender}" FontStyle="Italic" Margin="0,0,0,5" />
-
-                                                <!-- Date Sent -->
-                                                <TextBlock x:Name="DateSentTextBlock"
-                           Text="{Binding DateSent, StringFormat='{}{0:MMM dd, yyyy}'}"
-                           FontStyle="Italic" Margin="0,0,0,5" />
-
-                                                <!-- Content -->
-                                                <TextBlock x:Name="ContentTextBlock" Text="{Binding Content}" TextWrapping="Wrap" Margin="0,0,0,5" />
-
-                                                <!-- Status (for example, showing if it's important) -->
-                                                <TextBlock x:Name="StatusTextBlock" Text="{Binding IsImportant, Converter={StaticResource BooleanToTextConverter}}" 
-                           Foreground="Yellow" FontWeight="Bold" Margin="0,0,0,5"/>
-                                            </StackPanel>
-                                        </Border>
-
-                                        <!-- DataTemplate trigger that updates properties when IsImportant is true -->
-                                        <DataTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding IsImportant}" Value="True">
-                                                <!-- Change Background -->
-                                                <Setter TargetName="EmailBorder" Property="Background" Value="DarkRed" />
-
-                                                <!-- Change Foreground for all text elements -->
-                                                <Setter TargetName="SubjectTextBlock" Property="Foreground" Value="White" />
-                                                <Setter TargetName="SenderTextBlock" Property="Foreground" Value="White" />
-                                                <Setter TargetName="DateSentTextBlock" Property="Foreground" Value="White" />
-                                                <Setter TargetName="ContentTextBlock" Property="Foreground" Value="White" />
-                                                <Setter TargetName="StatusTextBlock" Property="Foreground" Value="White" />
-                                            </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
-
-                            </ListView>
-                        </Grid>
-                    </Grid>
-                </Grid>
-
-                <!-- Closing the nested Grid for Email List -->
-
-                <!-- (d) StackPanel: Displays the content of the selected email -->
-                <StackPanel Grid.Column="2" Margin="5" Background="{StaticResource LightBackgroundColor}">
-                    <TextBlock Text="{Binding SelectedItem.Subject, ElementName=EmailList}" 
-                               FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="16" Margin="0,0,0,5" />
-                    <TextBlock Text="{Binding SelectedItem.Sender, ElementName=EmailList}" 
-                               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5" />
-                    <TextBlock Text="{Binding SelectedItem.DateSent, StringFormat='{}{0:MMM dd, yyyy}', ElementName=EmailList}" 
-                               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5" />
-                    <TextBlock Text="{Binding SelectedItem.Content, ElementName=EmailList}" 
-                               TextWrapping="Wrap" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5" />
-                </StackPanel>
-
-                <!-- Button to toggle importance -->
-                <Button Content="Toggle Important" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
-                        Click="ToggleImportant_Click"/>
+                <!-- Email List -->
+                <ListView Name="EmailList" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          MouseDoubleClick="EmailList_DoubleClick" Background="{StaticResource LightBackgroundColor}" 
+                          FontFamily="Segoe UI" Foreground="{StaticResource TextColor}" 
+                          SelectionChanged="EmailList_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="EmailBorder" Tag="{Binding}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" Padding="5" Margin="5">
+                                <StackPanel Orientation="Vertical">
+                                    <!-- Subject -->
+                                    <TextBlock x:Name="SubjectTextBlock" Text="{Binding Subject}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <!-- Sender -->
+                                    <TextBlock x:Name="SenderTextBlock" Text="{Binding Sender}" FontStyle="Italic" Margin="0,0,0,5"/>
+                                    <!-- Date Sent -->
+                                    <TextBlock x:Name="DateSentTextBlock" Text="{Binding DateSent, StringFormat='{}{0:MMM dd, yyyy}'}" FontStyle="Italic" Margin="0,0,0,5"/>
+                                    <!-- Content -->
+                                    <TextBlock x:Name="ContentTextBlock" Text="{Binding Content}" TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                    <!-- Status -->
+                                    <TextBlock x:Name="StatusTextBlock" Text="{Binding IsImportant, Converter={StaticResource BooleanToTextConverter}}"
+                                               Foreground="Yellow" FontWeight="Bold" Margin="0,0,0,5"/>
+                                </StackPanel>
+                            </Border>
+                            <!-- Trigger for Important Emails -->
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsImportant}" Value="True">
+                                    <Setter TargetName="EmailBorder" Property="Background" Value="DarkRed"/>
+                                    <Setter TargetName="SubjectTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="SenderTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="DateSentTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="ContentTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="StatusTextBlock" Property="Foreground" Value="White"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
-            <!-- Closing the outer Grid element for main content -->
 
+            <!-- (c3) Email Content Section and Toggle Important -->
+            <StackPanel Grid.Column="2" Margin="5" Background="{StaticResource LightBackgroundColor}">
+                <!-- Selected Email Details -->
+                <TextBlock Text="{Binding SelectedItem.Subject, ElementName=EmailList}" 
+                           FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="16" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedItem.Sender, ElementName=EmailList}" 
+                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedItem.DateSent, StringFormat='{}{0:MMM dd, yyyy}', ElementName=EmailList}" 
+                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedItem.Content, ElementName=EmailList}" 
+                           TextWrapping="Wrap" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
+                <!-- Toggle Important Button -->
+                <Button Content="Toggle Important" Click="ToggleImportant_Click" Margin="10" HorizontalAlignment="Left"/>
+            </StackPanel>
         </Grid>
-        <!-- Closing the Grid for main content area -->
     </Grid>
-    <!-- Closing the root Grid -->
 </Window>
