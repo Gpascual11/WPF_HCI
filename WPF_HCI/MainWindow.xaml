@@ -5,6 +5,7 @@
         xmlns:converters="clr-namespace:WPF_HCI.Converters"
         Title="Email Client" Height="600" Width="1000" MinHeight="400" MinWidth="800"
         FontFamily="Segoe UI">
+
     <!-- Window Resources -->
     <Window.Resources>
         <!-- Theme Colors -->
@@ -16,12 +17,12 @@
         <SolidColorBrush x:Key="TextGrayColor" Color="#D3D3D3"/>
         <SolidColorBrush x:Key="LightGrayColor" Color="#D3D3D3"/>
         <SolidColorBrush x:Key="BorderColor" Color="#A9A9A9"/>
-        <!-- Converter -->
+        <!-- Converters -->
         <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
     </Window.Resources>
 
     <Grid Background="{StaticResource DarkBackgroundColor}">
-        <!-- Define the main grid rows -->
+        <!-- Main Grid Rows: Logo, Menu, Main Content -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Logo -->
@@ -88,7 +89,7 @@
                 <ColumnDefinition Width="4*"/>
                 <!-- Email List -->
                 <ColumnDefinition Width="5*"/>
-                <!-- Email Content -->
+                <!-- Email Details -->
             </Grid.ColumnDefinitions>
 
             <!-- (c1) Sidebar: Mailbox TreeView -->
@@ -115,9 +116,12 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <!-- Search & Filter -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Toggle Important Button -->
                     <RowDefinition Height="*"/>
                     <!-- Email List -->
                 </Grid.RowDefinitions>
+
                 <!-- Search and Filter -->
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
                     <TextBox Name="SearchBox" Width="200" Height="25" Text="Search..." Foreground="{StaticResource TextGrayColor}"
@@ -130,37 +134,52 @@
                         <ComboBoxItem Content="Important" Foreground="{StaticResource DarkBackgroundColor}"/>
                     </ComboBox>
                 </StackPanel>
+                <!-- Toggle Important Button -->
+                <Button Content="Toggle Important" Grid.Row="1" Margin="10" HorizontalAlignment="Left" Click="ToggleImportant_Click"/>
                 <!-- Email List -->
-                <ListView Name="EmailList" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                <ListView Name="EmailList" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                           MouseDoubleClick="EmailList_DoubleClick" Background="{StaticResource LightBackgroundColor}" 
                           FontFamily="Segoe UI" Foreground="{StaticResource TextColor}" 
                           SelectionChanged="EmailList_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="EmailBorder" Tag="{Binding}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" Padding="5" Margin="5">
+                            <!-- Enhanced Email Item -->
+                            <Border x:Name="EmailBorder" Tag="{Binding}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" Padding="8" Margin="5" CornerRadius="8">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.3"/>
+                                </Border.Effect>
                                 <StackPanel Orientation="Vertical">
                                     <!-- Subject -->
-                                    <TextBlock x:Name="SubjectTextBlock" Text="{Binding Subject}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock x:Name="SubjectTextBlock" Text="{Binding Subject}" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
                                     <!-- Sender -->
-                                    <TextBlock x:Name="SenderTextBlock" Text="{Binding Sender}" FontStyle="Italic" Margin="0,0,0,5"/>
+                                    <TextBlock x:Name="SenderTextBlock" Text="{Binding Sender}" FontStyle="Italic" FontSize="12" Margin="0,0,0,4"/>
                                     <!-- Date Sent -->
-                                    <TextBlock x:Name="DateSentTextBlock" Text="{Binding DateSent, StringFormat='{}{0:MMM dd, yyyy}'}" FontStyle="Italic" Margin="0,0,0,5"/>
-                                    <!-- Content -->
-                                    <TextBlock x:Name="ContentTextBlock" Text="{Binding Content}" TextWrapping="Wrap" Margin="0,0,0,5"/>
-                                    <!-- Status -->
-                                    <TextBlock x:Name="StatusTextBlock" Text="{Binding IsImportant, Converter={StaticResource BooleanToTextConverter}}"
-                                               Foreground="Yellow" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock x:Name="DateSentTextBlock" Text="{Binding DateSent, StringFormat='{}{0:MMM dd, yyyy}'}" FontSize="12" Margin="0,0,0,4"/>
+                                    <!-- Recipients -->
+                                    <TextBlock x:Name="RecipientsTextBlock" Text="{Binding Recipients}" FontSize="12" Foreground="{StaticResource TextGrayColor}" Margin="0,0,0,4"/>
+                                    <!-- Preview of Content -->
+                                    <TextBlock x:Name="PreviewTextBlock" Text="{Binding Content}" FontSize="12" Foreground="{StaticResource TextGrayColor}" TextTrimming="CharacterEllipsis" MaxHeight="40" Margin="0,0,0,4"/>
+                                    <!-- Attachment Icon -->
+                                    <TextBlock x:Name="AttachmentIcon" Text="📎" FontSize="14" Visibility="Visible"/>
                                 </StackPanel>
                             </Border>
-                            <!-- Trigger for Important Emails -->
                             <DataTemplate.Triggers>
+                                <!-- Hover Effect -->
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Setter TargetName="EmailBorder" Property="Background" Value="#444444"/>
+                                </Trigger>
+                                <!-- Important Email Style -->
                                 <DataTrigger Binding="{Binding IsImportant}" Value="True">
-                                    <Setter TargetName="EmailBorder" Property="Background" Value="DarkRed"/>
+                                    <Setter TargetName="EmailBorder" Property="Background" Value="IndianRed"/>
                                     <Setter TargetName="SubjectTextBlock" Property="Foreground" Value="White"/>
                                     <Setter TargetName="SenderTextBlock" Property="Foreground" Value="White"/>
                                     <Setter TargetName="DateSentTextBlock" Property="Foreground" Value="White"/>
-                                    <Setter TargetName="ContentTextBlock" Property="Foreground" Value="White"/>
-                                    <Setter TargetName="StatusTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="RecipientsTextBlock" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="PreviewTextBlock" Property="Foreground" Value="White"/>
+                                </DataTrigger>
+                                <!-- Hide Attachment Icon if no attachments -->
+                                <DataTrigger Binding="{Binding Attachments.Count}" Value="0">
+                                    <Setter TargetName="AttachmentIcon" Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
@@ -168,20 +187,55 @@
                 </ListView>
             </Grid>
 
-            <!-- (c3) Email Content Section and Toggle Important -->
+            <!-- (c3) Email Details Section (Right Column) -->
+            <!-- (c3) Email Details Section (Right Column) -->
             <StackPanel Grid.Column="2" Margin="5" Background="{StaticResource LightBackgroundColor}">
-                <!-- Selected Email Details -->
+                <!-- Display Selected Email Details -->
                 <TextBlock Text="{Binding SelectedItem.Subject, ElementName=EmailList}" 
-                           FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="16" Margin="0,0,0,5"/>
+               FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="16" Margin="0,0,0,5"/>
                 <TextBlock Text="{Binding SelectedItem.Sender, ElementName=EmailList}" 
-                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
                 <TextBlock Text="{Binding SelectedItem.DateSent, StringFormat='{}{0:MMM dd, yyyy}', ElementName=EmailList}" 
-                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
                 <TextBlock Text="{Binding SelectedItem.Content, ElementName=EmailList}" 
-                           TextWrapping="Wrap" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
-                <!-- Toggle Important Button -->
-                <Button Content="Toggle Important" Click="ToggleImportant_Click" Margin="10" HorizontalAlignment="Left"/>
+               TextWrapping="Wrap" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
+
+                <!-- Attachments Panel: Hidden if no email is selected OR if attachments = 0 -->
+                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <!-- Default: Visible -->
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <!-- Trigger 1: No email selected -->
+                                <DataTrigger Binding="{Binding SelectedItem, ElementName=EmailList}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <!-- Trigger 2: Attachments count is zero -->
+                                <DataTrigger Binding="{Binding SelectedItem.Attachments.Count, ElementName=EmailList}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <!-- Label -->
+                    <TextBlock Text="Attachments:" FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
+
+                    <!-- Attachments List -->
+                    <ItemsControl ItemsSource="{Binding SelectedItem.Attachments, ElementName=EmailList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                    <TextBlock Text="📎" FontSize="14" Margin="0,0,5,0"/>
+                                    <TextBlock Text="{Binding}" FontSize="14" Foreground="{StaticResource TextColor}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </StackPanel>
+
         </Grid>
     </Grid>
 </Window>
