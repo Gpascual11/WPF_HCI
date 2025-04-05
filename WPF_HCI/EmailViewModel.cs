@@ -25,8 +25,23 @@ namespace WPF_HCI
 
         public List<string> Folders { get; set; }
 
-        // ICommand property for adding a new static email.
+        // The selected email (bound to the ListView's SelectedItem)
+        private Email selectedEmail;
+        public Email SelectedEmail
+        {
+            get => selectedEmail;
+            set
+            {
+                selectedEmail = value;
+                OnPropertyChanged(nameof(SelectedEmail));
+                // Force a re-evaluation of the command’s CanExecute.
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        // ICommand properties for adding and deleting emails.
         public ICommand AddStaticEmailCommand { get; }
+        public ICommand DeleteEmailCommand { get; }
 
         public EmailViewModel()
         {
@@ -34,8 +49,8 @@ namespace WPF_HCI
             FilteredEmails = new ObservableCollection<Email>();
             Folders = new List<string> { "Inbox1", "Sent1", "Drafts1", "Trash1", "Inbox2", "Sent2", "Drafts2", "Trash2" };
 
-            // Initialize the command.
             AddStaticEmailCommand = new RelayCommand(AddStaticEmail);
+            DeleteEmailCommand = new RelayCommand(DeleteEmail, CanDeleteEmail);
         }
 
         // Loads the predefined list of emails.
@@ -130,7 +145,6 @@ new Email("promo@store.com", new List<string> { "me@example.com" },
             OnPropertyChanged(nameof(FilteredEmails));
         }
 
-        // Existing filtering methods...
         public void FilterEmailsByFolder(string folder)
         {
             if (folder == "All")
@@ -187,10 +201,9 @@ new Email("promo@store.com", new List<string> { "me@example.com" },
             OnPropertyChanged(nameof(FilteredEmails));
         }
 
-        // This method is executed when the AddStaticEmailCommand is triggered.
+        // Adds a static email.
         private void AddStaticEmail()
         {
-            // Define the new email with static (hard-coded) attributes.
             var newEmail = new Email(
                 "static@company.com",
                 new List<string> { "recipient@example.com" },
@@ -202,18 +215,34 @@ new Email("promo@store.com", new List<string> { "me@example.com" },
                 "Inbox1"
             );
 
-            // Add the new email to the master collection.
             Emails.Add(newEmail);
-
-            // If the current filtered view is "Inbox1", add it to FilteredEmails.
+            // Add to the filtered view if appropriate.
             if (newEmail.Folder == "Inbox1")
             {
                 FilteredEmails.Add(newEmail);
             }
 
-            // Notify the UI (if necessary).
             OnPropertyChanged(nameof(Emails));
             OnPropertyChanged(nameof(FilteredEmails));
+        }
+
+        // Delete the currently selected email.
+        private void DeleteEmail()
+        {
+            if (SelectedEmail != null)
+            {
+                Emails.Remove(SelectedEmail);
+                FilteredEmails.Remove(SelectedEmail);
+                SelectedEmail = null;
+                OnPropertyChanged(nameof(Emails));
+                OnPropertyChanged(nameof(FilteredEmails));
+            }
+        }
+
+        // The command is enabled only if an email is selected.
+        private bool CanDeleteEmail()
+        {
+            return SelectedEmail != null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
