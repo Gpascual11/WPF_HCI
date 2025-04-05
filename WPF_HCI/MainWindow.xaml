@@ -61,11 +61,13 @@
                     <Image Width="16" Height="16" Source="/message.webp"/>
                 </MenuItem.Icon>
                 <!-- "New Static" MenuItem -->
-                <MenuItem Header="New Static" Foreground="{StaticResource DarkBackgroundColor}">
+                <MenuItem Header="New Static" Foreground="{StaticResource DarkBackgroundColor}" 
+          Command="{Binding AddStaticEmailCommand}">
                     <MenuItem.Icon>
                         <Image Width="16" Height="16" Source="/new-message.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
+
                 <!-- "Edit Static" MenuItem -->
                 <MenuItem Header="Edit Static" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
