@@ -159,6 +159,7 @@
 
                 <!-- ListView displaying email summaries -->
                 <ListView Name="EmailList"
+                          ItemsSource="{Binding FilteredEmails}"
                           Grid.Row="2"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Top"
