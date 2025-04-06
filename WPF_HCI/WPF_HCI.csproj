@@ -21,6 +21,7 @@
     <None Remove="exit.png" />
     <None Remove="file.webp" />
     <None Remove="logo.png" />
+    <None Remove="logo_2.png" />
     <None Remove="message.webp" />
     <None Remove="new-message.png" />
   </ItemGroup>
@@ -31,6 +32,7 @@
     <Resource Include="exit.png" />
     <Resource Include="file.webp" />
     <Resource Include="logo.png" />
+    <Resource Include="logo_2.png" />
     <Resource Include="message.webp" />
     <Resource Include="new-message.png" />
   </ItemGroup>

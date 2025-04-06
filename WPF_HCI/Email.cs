@@ -1,15 +1,29 @@
-﻿using System;
+﻿// Email.cs
+// ----------------------------------------------------------------------
+// This file defines the Email class, which represents an email message.
+// The class implements INotifyPropertyChanged to support data binding in
+// WPF applications. Changes to any property will notify the UI, ensuring
+// that data is always up-to-date.
+// 
+// Author: Gerard Pascual
+// Date: 4/4/2025
+// Version: 2.2
+// ----------------------------------------------------------------------
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel; // Required for INotifyPropertyChanged
 
 namespace WPF_HCI
 {
-    // The Email class represents an email message.
-    // It implements INotifyPropertyChanged to support data binding by notifying the UI
-    // whenever a property value changes.
+    /// <summary>
+    /// Represents an email message with properties such as Sender, Recipients,
+    /// Subject, Content, Attachments, DateSent, and Folder. Implements INotifyPropertyChanged
+    /// to support data binding.
+    /// </summary>
     public class Email : INotifyPropertyChanged
     {
-        // Private backing fields for properties.
+        // Private backing fields for the properties.
         private string _sender = string.Empty;
         private List<string> _recipients = new List<string>();
         private string _subject = string.Empty;
@@ -19,11 +33,15 @@ namespace WPF_HCI
         private DateTime _dateSent;
         private string _folder = string.Empty;
 
-        // Event required by INotifyPropertyChanged.
-        // Marked as nullable to match the interface.
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// Marked as nullable to match INotifyPropertyChanged interface.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        // Public property for the email sender.
+        /// <summary>
+        /// Gets or sets the sender of the email.
+        /// </summary>
         public string Sender
         {
             get => _sender;
@@ -34,7 +52,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for the list of recipients.
+        /// <summary>
+        /// Gets or sets the list of recipient email addresses.
+        /// </summary>
         public List<string> Recipients
         {
             get => _recipients;
@@ -45,7 +65,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for the email subject.
+        /// <summary>
+        /// Gets or sets the subject of the email.
+        /// </summary>
         public string Subject
         {
             get => _subject;
@@ -56,7 +78,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for the email content (body).
+        /// <summary>
+        /// Gets or sets the content (body) of the email.
+        /// </summary>
         public string Content
         {
             get => _content;
@@ -67,7 +91,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property to indicate if the email is marked as important.
+        /// <summary>
+        /// Gets or sets a value indicating whether the email is marked as important.
+        /// </summary>
         public bool IsImportant
         {
             get => _isImportant;
@@ -78,7 +104,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for storing attachments.
+        /// <summary>
+        /// Gets or sets the list of attachment file paths.
+        /// </summary>
         public List<string> Attachments
         {
             get => _attachments;
@@ -89,7 +117,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for the date the email was sent.
+        /// <summary>
+        /// Gets or sets the date and time the email was sent.
+        /// </summary>
         public DateTime DateSent
         {
             get => _dateSent;
@@ -100,7 +130,9 @@ namespace WPF_HCI
             }
         }
 
-        // Public property for the folder category of the email.
+        /// <summary>
+        /// Gets or sets the folder category of the email (e.g., Inbox, Sent, Drafts, Trash).
+        /// </summary>
         public string Folder
         {
             get => _folder;
@@ -111,16 +143,30 @@ namespace WPF_HCI
             }
         }
 
-        // The OnPropertyChanged method raises the PropertyChanged event.
+        /// <summary>
+        /// Raises the PropertyChanged event for the specified property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
+            // Notify any subscribers that the property value has changed.
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        // Constructor for the Email class.
+        /// <summary>
+        /// Initializes a new instance of the Email class with the specified parameters.
+        /// </summary>
+        /// <param name="sender">The email sender address.</param>
+        /// <param name="recipients">A list of recipient email addresses.</param>
+        /// <param name="subject">The subject of the email.</param>
+        /// <param name="content">The content (body) of the email.</param>
+        /// <param name="isImportant">A value indicating whether the email is marked as important.</param>
+        /// <param name="attachments">A list of attachment file paths.</param>
+        /// <param name="dateSent">The date and time the email was sent.</param>
+        /// <param name="folder">The folder category for the email (e.g., Inbox, Sent, Drafts, Trash).</param>
         public Email(string sender, List<string> recipients, string subject, string content, bool isImportant, List<string> attachments, DateTime dateSent, string folder)
         {
-            // Use public setters to initialize properties.
+            // Use the public setters to initialize properties so that change notifications occur.
             Sender = sender;
             Recipients = recipients;
             Subject = subject;
