@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="icons\**" />
+    <EmbeddedResource Remove="icons\**" />
+    <None Remove="icons\**" />
+    <Page Remove="icons\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="delete.webp" />
     <None Remove="edit.png" />
     <None Remove="exit.png" />
@@ -26,10 +33,6 @@
     <Resource Include="logo.png" />
     <Resource Include="message.webp" />
     <Resource Include="new-message.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="icons\" />
   </ItemGroup>
 
 </Project>

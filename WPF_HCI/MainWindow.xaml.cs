@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,12 +67,11 @@ namespace WPF_HCI
 
         private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (FilterBox?.SelectedItem == null)
-                return;
-
-            string selectedFilter = (FilterBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            // Ensure a non-null value by defaulting to "All" if null.
+            string selectedFilter = ((ComboBoxItem?)FilterBox.SelectedItem)?.Content?.ToString() ?? "All";
             ViewModel.FilterByOption(selectedFilter);
         }
+
 
         private void ToggleImportant_Click(object sender, RoutedEventArgs e)
         {
@@ -85,7 +85,7 @@ namespace WPF_HCI
         {
             if (FolderTree.SelectedItem is TreeViewItem selectedFolder)
             {
-                string folderTag = selectedFolder.Tag?.ToString();
+                string folderTag = selectedFolder.Tag?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(folderTag))
                 {
                     ViewModel.FilterEmailsByFolder(folderTag);
@@ -98,5 +98,6 @@ namespace WPF_HCI
         {
             // No additional logic needed.
         }
+
     }
 }

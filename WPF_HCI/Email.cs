@@ -10,125 +10,117 @@ namespace WPF_HCI
     public class Email : INotifyPropertyChanged
     {
         // Private backing fields for properties.
-        private string _sender;
-        private List<string> _recipients;
-        private string _subject;
-        private string _content;
+        private string _sender = string.Empty;
+        private List<string> _recipients = new List<string>();
+        private string _subject = string.Empty;
+        private string _content = string.Empty;
         private bool _isImportant;
-        private List<string> _attachments;
+        private List<string> _attachments = new List<string>();
         private DateTime _dateSent;
-        private string _folder;  // Used to categorize emails (e.g., Inbox, Sent, etc.)
+        private string _folder = string.Empty;
 
-        // Event required by the INotifyPropertyChanged interface.
-        // This event is raised whenever a property value changes.
-        public event PropertyChangedEventHandler PropertyChanged;
+        // Event required by INotifyPropertyChanged.
+        // Marked as nullable to match the interface.
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         // Public property for the email sender.
-        // When the value is set, it calls OnPropertyChanged to notify subscribers.
         public string Sender
         {
-            get { return _sender; }
+            get => _sender;
             set
             {
                 _sender = value;
-                OnPropertyChanged(nameof(Sender)); // Notify that Sender has changed.
+                OnPropertyChanged(nameof(Sender));
             }
         }
 
         // Public property for the list of recipients.
-        // Recipients are stored as a List of strings.
         public List<string> Recipients
         {
-            get { return _recipients; }
+            get => _recipients;
             set
             {
                 _recipients = value;
-                OnPropertyChanged(nameof(Recipients)); // Notify that Recipients has changed.
+                OnPropertyChanged(nameof(Recipients));
             }
         }
 
         // Public property for the email subject.
         public string Subject
         {
-            get { return _subject; }
+            get => _subject;
             set
             {
                 _subject = value;
-                OnPropertyChanged(nameof(Subject)); // Notify that Subject has changed.
+                OnPropertyChanged(nameof(Subject));
             }
         }
 
         // Public property for the email content (body).
         public string Content
         {
-            get { return _content; }
+            get => _content;
             set
             {
                 _content = value;
-                OnPropertyChanged(nameof(Content)); // Notify that Content has changed.
+                OnPropertyChanged(nameof(Content));
             }
         }
 
         // Public property to indicate if the email is marked as important.
         public bool IsImportant
         {
-            get { return _isImportant; }
+            get => _isImportant;
             set
             {
                 _isImportant = value;
-                OnPropertyChanged(nameof(IsImportant)); // Notify that IsImportant has changed.
+                OnPropertyChanged(nameof(IsImportant));
             }
         }
 
         // Public property for storing attachments.
-        // Only the file paths of the attachments are saved.
         public List<string> Attachments
         {
-            get { return _attachments; }
+            get => _attachments;
             set
             {
                 _attachments = value;
-                OnPropertyChanged(nameof(Attachments)); // Notify that Attachments has changed.
+                OnPropertyChanged(nameof(Attachments));
             }
         }
 
         // Public property for the date the email was sent.
         public DateTime DateSent
         {
-            get { return _dateSent; }
+            get => _dateSent;
             set
             {
                 _dateSent = value;
-                OnPropertyChanged(nameof(DateSent)); // Notify that DateSent has changed.
+                OnPropertyChanged(nameof(DateSent));
             }
         }
 
         // Public property for the folder category of the email.
-        // This property can be used to organize emails (e.g., Inbox, Sent, Drafts, Trash).
         public string Folder
         {
-            get { return _folder; }
+            get => _folder;
             set
             {
                 _folder = value;
-                OnPropertyChanged(nameof(Folder)); // Notify that Folder has changed.
+                OnPropertyChanged(nameof(Folder));
             }
         }
 
-        // The OnPropertyChanged method is a helper that raises the PropertyChanged event.
-        // It takes the name of the property that changed as a parameter.
+        // The OnPropertyChanged method raises the PropertyChanged event.
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            // If there are any subscribers to the PropertyChanged event, raise the event.
-            // This notifies the UI (or any other subscribers) to update based on the new property value.
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         // Constructor for the Email class.
-        // Initializes all properties of the email, ensuring that the PropertyChanged event is raised.
         public Email(string sender, List<string> recipients, string subject, string content, bool isImportant, List<string> attachments, DateTime dateSent, string folder)
         {
-            // Set each property using the public setters so that OnPropertyChanged is invoked.
+            // Use public setters to initialize properties.
             Sender = sender;
             Recipients = recipients;
             Subject = subject;
@@ -136,7 +128,7 @@ namespace WPF_HCI
             IsImportant = isImportant;
             Attachments = attachments;
             DateSent = dateSent;
-            Folder = folder;  // Categorize the email by folder (e.g., Inbox, Sent)
+            Folder = folder;
         }
     }
 }
