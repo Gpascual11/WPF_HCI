@@ -32,16 +32,18 @@ namespace WPF_HCI
             get => selectedEmail;
             set
             {
-                selectedEmail = value;
-                OnPropertyChanged(nameof(SelectedEmail));
-                // Force a re-evaluation of the command’s CanExecute.
-                CommandManager.InvalidateRequerySuggested();
+                if (selectedEmail != value)
+                {
+                    selectedEmail = value;
+                    OnPropertyChanged(nameof(SelectedEmail));
+                }
             }
         }
 
         // ICommand properties for adding and deleting emails.
         public ICommand AddStaticEmailCommand { get; }
         public ICommand DeleteEmailCommand { get; }
+        public ICommand EditDraftEmailCommand { get; }
 
         public EmailViewModel()
         {
@@ -51,6 +53,7 @@ namespace WPF_HCI
 
             AddStaticEmailCommand = new RelayCommand(AddStaticEmail);
             DeleteEmailCommand = new RelayCommand(DeleteEmail, CanDeleteEmail);
+            EditDraftEmailCommand = new RelayCommand(EditDraftEmail, CanEditDraftEmail);
         }
 
         // Loads the predefined list of emails.
@@ -140,8 +143,7 @@ new Email("promo@store.com", new List<string> { "me@example.com" },
     false, new List<string>(), DateTime.Parse("2025-03-25"), "Trash2")            };
 
             Emails = new ObservableCollection<Email>(list);
-            // For example, set the default view to "Inbox1"
-            FilteredEmails = new ObservableCollection<Email>(Emails.Where(email => email.Folder == "Inbox1"));
+            FilteredEmails = new ObservableCollection<Email>(Emails);
             OnPropertyChanged(nameof(FilteredEmails));
         }
 
@@ -245,10 +247,27 @@ new Email("promo@store.com", new List<string> { "me@example.com" },
             return SelectedEmail != null;
         }
 
+        // Determines if the Edit command can run: only if a draft email is selected.
+        private bool CanEditDraftEmail()
+        {
+            return SelectedEmail != null && SelectedEmail.Folder.StartsWith("Drafts");
+        }
+
+        // Edit the selected draft email by updating its Content property.
+        private void EditDraftEmail()
+        {
+            // Hardcoded new content for testing.
+            SelectedEmail.Content = "This content has been updated via the Edit command.";
+            // Assuming Email implements INotifyPropertyChanged, the change will update automatically.
+            OnPropertyChanged(nameof(SelectedEmail));
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
     }
 }

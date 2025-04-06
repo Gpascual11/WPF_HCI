@@ -70,7 +70,8 @@
                 </MenuItem>
 
                 <!-- "Edit Static" MenuItem -->
-                <MenuItem Header="Edit Static" Foreground="{StaticResource DarkBackgroundColor}">
+                <MenuItem Header="Edit Static" Foreground="{StaticResource DarkBackgroundColor}" 
+          Command="{Binding DataContext.EditDraftEmailCommand, ElementName=WindowRoot}">
                     <MenuItem.Icon>
                         <Image Width="16" Height="16" Source="/edit.png"/>
                     </MenuItem.Icon>
@@ -88,7 +89,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
                 <!-- "Delete" MenuItem -->
-                <MenuItem Header="Delete" Foreground="{StaticResource DarkBackgroundColor}" 
+                <MenuItem Header="Delete" Foreground="{StaticResource DarkBackgroundColor}"
           Command="{Binding DataContext.DeleteEmailCommand, ElementName=WindowRoot}">
                     <MenuItem.Icon>
                         <Image Width="16" Height="16" Source="/delete.webp"/>
@@ -256,31 +257,34 @@
             <!-- (c3) Email Details Section: Shows full details of the selected email -->
             <StackPanel Grid.Column="2" Margin="5" Background="{StaticResource LightBackgroundColor}">
                 <!-- Bind to the selected email's subject -->
-                <TextBlock Text="{Binding SelectedItem.Subject, ElementName=EmailList}" 
-                           FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="16" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedEmail.Subject}" 
+               FontWeight="Bold" Foreground="{StaticResource TextColor}" 
+               FontSize="16" Margin="0,0,0,5"/>
                 <!-- Bind to the selected email's sender -->
-                <TextBlock Text="{Binding SelectedItem.Sender, ElementName=EmailList}" 
-                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedEmail.Sender}" 
+               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" 
+               FontSize="14" Margin="0,0,0,5"/>
                 <!-- Bind to the selected email's sent date -->
-                <TextBlock Text="{Binding SelectedItem.DateSent, StringFormat='{}{0:MMM dd, yyyy}', ElementName=EmailList}" 
-                           Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedEmail.DateSent, StringFormat='{}{0:MMM dd, yyyy}'}" 
+               Foreground="{StaticResource TextGrayColor}" FontStyle="Italic" 
+               FontSize="14" Margin="0,0,0,5"/>
                 <!-- Bind to the selected email's content -->
-                <TextBlock Text="{Binding SelectedItem.Content, ElementName=EmailList}" 
-                           TextWrapping="Wrap" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding SelectedEmail.Content}" 
+               TextWrapping="Wrap" Foreground="{StaticResource TextColor}" 
+               FontSize="14" Margin="0,0,0,5"/>
 
                 <!-- Attachments Section: Only visible if the selected email has attachments -->
                 <StackPanel Orientation="Vertical" Margin="0,10,0,0">
-                    <!-- Use a style to collapse this panel when no email is selected or there are no attachments -->
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
                             <Setter Property="Visibility" Value="Visible" />
                             <Style.Triggers>
                                 <!-- Collapse when no email is selected -->
-                                <DataTrigger Binding="{Binding SelectedItem, ElementName=EmailList}" Value="{x:Null}">
+                                <DataTrigger Binding="{Binding SelectedEmail}" Value="{x:Null}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                                 <!-- Collapse when the selected email has no attachments -->
-                                <DataTrigger Binding="{Binding SelectedItem.Attachments.Count, ElementName=EmailList}" Value="0">
+                                <DataTrigger Binding="{Binding SelectedEmail.Attachments.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -288,17 +292,18 @@
                     </StackPanel.Style>
 
                     <!-- Label for the attachments section -->
-                    <TextBlock Text="Attachments:" FontWeight="Bold" Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
-
+                    <TextBlock Text="Attachments:" FontWeight="Bold" 
+                   Foreground="{StaticResource TextColor}" FontSize="14" Margin="0,0,0,5"/>
                     <!-- ItemsControl to list each attachment -->
-                    <ItemsControl ItemsSource="{Binding SelectedItem.Attachments, ElementName=EmailList}">
+                    <ItemsControl ItemsSource="{Binding SelectedEmail.Attachments}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
                                     <!-- Attachment icon -->
                                     <TextBlock Text="📎" FontSize="14" Margin="0,0,5,0"/>
                                     <!-- Attachment file name -->
-                                    <TextBlock Text="{Binding}" FontSize="14" Foreground="{StaticResource TextColor}"/>
+                                    <TextBlock Text="{Binding}" FontSize="14" 
+                                   Foreground="{StaticResource TextColor}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
