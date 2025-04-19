@@ -1,0 +1,202 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Theme Colors -->
+    <SolidColorBrush x:Key="DarkBackgroundColor" Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="LightBackgroundColor" Color="#333333"/>
+    <SolidColorBrush x:Key="AccentBlueColor" Color="#3A7CA5"/>
+    <SolidColorBrush x:Key="AccentGrayColor" Color="#A9A9A9"/>
+    <SolidColorBrush x:Key="TextColor" Color="White"/>
+    <SolidColorBrush x:Key="TextGrayColor" Color="#D3D3D3"/>
+    <SolidColorBrush x:Key="LightGrayColor" Color="#D3D3D3"/>
+    <SolidColorBrush x:Key="BorderColor" Color="#A9A9A9"/>
+
+    <!-- Menu -->
+    <Style x:Key="MenuStyleMain" TargetType="Menu">
+        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+    </Style>
+
+    <Style x:Key="MenuItemStylePrimary" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+    </Style>
+
+    <Style x:Key="MenuItemStyleSecondary" TargetType="MenuItem" BasedOn="{StaticResource MenuItemStylePrimary}">
+        <Setter Property="Foreground" Value="{StaticResource DarkBackgroundColor}"/>
+    </Style>
+
+    <!-- TreeView Styles -->
+    <Style x:Key="TreeViewStyleSidebar" TargetType="TreeView">
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+    </Style>
+
+    <Style x:Key="TreeViewItemStyleSidebar" TargetType="TreeViewItem">
+        <Setter Property="Foreground" Value="{StaticResource TextGrayColor}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Style.Triggers>
+            <Trigger Property="HasItems" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#444444"/>
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource AccentBlueColor}"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Buttons -->
+    <Style x:Key="ButtonStylePrimary" TargetType="Button">
+        <Setter Property="Background" Value="DodgerBlue"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Padding" Value="5,2"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <!-- ListView -->
+    <Style x:Key="ListViewStyleEmail" TargetType="ListView">
+        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
+    <Style x:Key="ListViewItemStyleEmail" TargetType="ListViewItem">
+        <Setter Property="VerticalContentAlignment" Value="Top"/>
+    </Style>
+
+    <!-- Email Item TextBlocks -->
+    <Style x:Key="TextBlockStyleEmailSubject" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleEmailSender" TargetType="TextBlock">
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleEmailDate" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+    </Style>
+
+    <!-- Email Details TextBlocks -->
+    <Style x:Key="TextBlockStyleDetailsSubject" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleDetailsSender" TargetType="TextBlock">
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource TextGrayColor}"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleDetailsDate" TargetType="TextBlock">
+        <Setter Property="FontStyle" Value="Italic"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource TextGrayColor}"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleDetailsContent" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <!-- Attachments Section -->
+    <Style x:Key="TextBlockStyleDetailsAttachmentHeader" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        <Setter Property="Margin" Value="0,0,0,5"/>
+    </Style>
+
+    <Style x:Key="TextBlockStyleAttachmentItem" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+    </Style>
+	
+	<!-- Border Style with Important Highlighting -->
+	<Style x:Key="EmailBorderStyle" TargetType="Border">
+		<Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+		<Setter Property="BorderBrush" Value="{StaticResource BorderColor}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="10" />
+		<Setter Property="Margin" Value="5" />
+		<Setter Property="CornerRadius" Value="8" />
+		<Setter Property="Effect">
+			<Setter.Value>
+				<DropShadowEffect Color="Black" BlurRadius="5" ShadowDepth="2" Opacity="0.3" />
+			</Setter.Value>
+		</Setter>
+
+		<!-- Trigger for IsImportant -->
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding IsImportant}" Value="True">
+				<Setter Property="Background" Value="Crimson" />
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Subject Style -->
+	<Style x:Key="EmailSubjectStyle" TargetType="TextBlock">
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Margin" Value="0,0,0,4"/>
+		<Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding IsImportant}" Value="True">
+				<Setter Property="Foreground" Value="White"/>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Sender Style -->
+	<Style x:Key="EmailSenderStyle" TargetType="TextBlock">
+		<Setter Property="FontStyle" Value="Italic"/>
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="Margin" Value="0,0,0,4"/>
+		<Setter Property="Foreground" Value="{StaticResource TextGrayColor}"/>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding IsImportant}" Value="True">
+				<Setter Property="Foreground" Value="White"/>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+	<!-- Date Style -->
+	<Style x:Key="EmailDateStyle" TargetType="TextBlock">
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="Margin" Value="0,0,0,4"/>
+		<Setter Property="Foreground" Value="{StaticResource TextGrayColor}"/>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding IsImportant}" Value="True">
+				<Setter Property="Foreground" Value="White"/>
+			</DataTrigger>
+		</Style.Triggers>
+	</Style>
+
+
+
+
+
+</ResourceDictionary>
