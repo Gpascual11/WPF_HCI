@@ -30,6 +30,8 @@ namespace WPF_HCI
         /// </summary>
         public EmailViewModel ViewModel { get; set; } = new EmailViewModel();
 
+        private EditEmailWindow? editWindow; // Only allow one instance
+
         /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// Sets the DataContext, loads emails, and attaches event handlers.
@@ -45,9 +47,6 @@ namespace WPF_HCI
 
             // Load the predefined list of emails.
             ViewModel.LoadEmails();
-
-            // Attach event handler for the FilterBox SelectionChanged event.
-            FilterBox.SelectionChanged += FilterBox_SelectionChanged;
         }
 
         /// <summary>
@@ -73,54 +72,9 @@ namespace WPF_HCI
                                 MessageBoxImage.Information);
             }
         }
-
-        /// <summary>
-        /// Event handler for when the SearchBox gains focus.
-        /// Clears the default text ("Search...") and changes the foreground color to black.
-        /// </summary>
-        private void SearchBox_GotFocus(object sender, RoutedEventArgs e)
+        private void EmailList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SearchBox.Text == "Search...")
-            {
-                SearchBox.Text = "";
-                SearchBox.Foreground = System.Windows.Media.Brushes.Black;
-            }
-        }
-
-        /// <summary>
-        /// Event handler for when the SearchBox loses focus.
-        /// Restores the default text ("Search...") and sets the foreground color to gray if empty.
-        /// </summary>
-        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(SearchBox.Text))
-            {
-                SearchBox.Text = "Search...";
-                SearchBox.Foreground = System.Windows.Media.Brushes.Gray;
-            }
-        }
-
-        /// <summary>
-        /// Event handler for changes in the SearchBox text.
-        /// Filters emails based on the entered query.
-        /// </summary>
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // Do not filter if the text is still the default prompt.
-            if (SearchBox.Text == "Search...") return;
-            ViewModel.FilterEmails(SearchBox.Text);
-        }
-
-        /// <summary>
-        /// Event handler for changes in the FilterBox selection.
-        /// Retrieves the selected filter option and calls the ViewModel's FilterByOption method.
-        /// Defaults to "All" if no selection is found.
-        /// </summary>
-        private void FilterBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Ensure a non-null value by defaulting to "All" if null.
-            string selectedFilter = ((ComboBoxItem?)FilterBox.SelectedItem)?.Content?.ToString() ?? "All";
-            ViewModel.FilterByOption(selectedFilter);
+            EditMenuItem.IsEnabled = ViewModel.SelectedEmail != null;
         }
 
         /// <summary>
@@ -151,5 +105,43 @@ namespace WPF_HCI
                 }
             }
         }
+
+        private void NewEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new NewEmailWindow(ViewModel);
+            dlg.ShowDialog();   // modal
+        }
+
+        private EditEmailWindow? _editWindow; // Only one window at a time
+
+        private void EditMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (editWindow == null || !editWindow.IsLoaded)
+            {
+                editWindow = new EditEmailWindow(ViewModel);
+                editWindow.Show();
+            }
+            else
+            {
+                editWindow.Activate();
+            }
+        }
+
+        private void SearchControl_SearchChanged(object sender, SearchChangedEventArgs e)
+        {
+            ViewModel.FilterEmailsByCategory(e.Query, e.Category);
+        }
+
+        private void SearchControl_SearchReset(object sender, EventArgs e)
+        {
+            ViewModel.FilterEmailsByFolder(ViewModel.CurrentFolder); // Resets to current folder
+        }
+
+        private void SearchControl_FilterChanged(object sender, string filter)
+        {
+            ViewModel.FilterByOption(filter);
+        }
+
+
     }
 }

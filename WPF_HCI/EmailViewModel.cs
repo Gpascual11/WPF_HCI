@@ -249,28 +249,6 @@ namespace WPF_HCI
         }
 
         /// <summary>
-        /// Filters the emails based on a search query that checks the email subject and sender.
-        /// </summary>
-        /// <param name="query">The search query.</param>
-        public void FilterEmails(string query)
-        {
-            if (string.IsNullOrWhiteSpace(query))
-            {
-                // If query is empty, show all emails.
-                FilteredEmails = new ObservableCollection<Email>(Emails);
-            }
-            else
-            {
-                string lowerQuery = query.ToLower();
-                var filtered = Emails.Where(email =>
-                    email.Subject.ToLower().Contains(lowerQuery) ||
-                    email.Sender.ToLower().Contains(lowerQuery)).ToList();
-                FilteredEmails = new ObservableCollection<Email>(filtered);
-            }
-            OnPropertyChanged(nameof(FilteredEmails));
-        }
-
-        /// <summary>
         /// Filters emails based on the given option.
         /// Options include "All", "Unread", and "Important".
         /// </summary>
@@ -380,6 +358,39 @@ namespace WPF_HCI
                 OnPropertyChanged(nameof(SelectedEmail));
             }
         }
+
+        /// <summary>
+        /// Filters emails based on a query and category (e.g., Subject, Sender, Recipient).
+        /// </summary>
+        public void FilterEmailsByCategory(string query, string category)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                FilteredEmails = new ObservableCollection<Email>(
+                    Emails.Where(e => e.Folder == CurrentFolder));
+                return;
+            }
+
+            string lowerQuery = query.ToLower();
+            IEnumerable<Email> filtered = Emails.Where(e => e.Folder == CurrentFolder);
+
+            switch (category)
+            {
+                case "Subject":
+                    filtered = filtered.Where(e => e.Subject.ToLower().Contains(lowerQuery));
+                    break;
+                case "Sender":
+                    filtered = filtered.Where(e => e.Sender.ToLower().Contains(lowerQuery));
+                    break;
+                case "Recipient":
+                    filtered = filtered.Where(e =>
+                        e.Recipients.Any(r => r.ToLower().Contains(lowerQuery)));
+                    break;
+            }
+
+            FilteredEmails = new ObservableCollection<Email>(filtered);
+        }
+
 
         /// <summary>
         /// Occurs when a property value changes.
