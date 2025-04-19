@@ -15,7 +15,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WPF_HCI"
         Title="P Email" 
-        Icon="/logo_2.png"
+        Icon="pack://application:,,,/Assets/logo_2.png"
         Height="600" Width="1000" MinHeight="400" MinWidth="800"
         FontFamily="Segoe UI">
     <!-- Window.Resources: Define reusable resources like colors and converters -->
@@ -46,8 +46,8 @@
         <!-- (a) Logo Section -->
         <Grid Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
             <!-- Display the application logo on the top-left -->
-            <Image Source="logo.png" HorizontalAlignment="Left" VerticalAlignment="Center"
-                   Margin="10,0,0,0" Width="40" Height="40"/>
+            <Image Source="pack://application:,,,/Assets/logo.png" HorizontalAlignment="Left" VerticalAlignment="Center"
+       Margin="10,0,0,0" Width="40" Height="40"/>
         </Grid>
 
         <!-- (b) Main Menu Section -->
@@ -56,12 +56,12 @@
             <MenuItem Header="File" Foreground="{StaticResource TextColor}">
                 <!-- Icon for the File menu -->
                 <MenuItem.Icon>
-                    <Image Width="16" Height="16" Source="/file.webp"/>
+                    <Image Width="16" Height="16" Source="pack://application:,,,/Assets/file.webp"/>
                 </MenuItem.Icon>
                 <!-- "Exit" MenuItem that calls the Exit_Click event handler -->
                 <MenuItem Header="Exit" Click="Exit_Click" Foreground="{StaticResource DarkBackgroundColor}">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/exit.png"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/exit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -69,27 +69,27 @@
             <MenuItem Header="Message" Foreground="{StaticResource TextColor}">
                 <!-- Icon for the Message menu -->
                 <MenuItem.Icon>
-                    <Image Width="16" Height="16" Source="/message.webp"/>
+                    <Image Width="16" Height="16" Source="pack://application:,,,/Assets/message.webp"/>
                 </MenuItem.Icon>
                 <!-- "New Static" MenuItem bound to the AddStaticEmailCommand -->
                 <MenuItem Header="New Static" Foreground="{StaticResource DarkBackgroundColor}" 
                           Command="{Binding AddStaticEmailCommand}">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/new-message.png"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/new-message.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <!-- "Edit Static" MenuItem bound to the EditDraftEmailCommand -->
                 <MenuItem Header="Edit Static" Foreground="{StaticResource DarkBackgroundColor}" 
                           Command="{Binding DataContext.EditDraftEmailCommand, ElementName=WindowRoot}">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/edit.png"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/edit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <!-- "New" MenuItem -->
                 <MenuItem Header="New" Foreground="{StaticResource DarkBackgroundColor}" 
                         Click="NewEmail_Click">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/new-message.png"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/new-message.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -100,7 +100,7 @@
           Click="EditMenuItem_Click"
           IsEnabled="False">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/edit.png"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/edit.png"/>
                     </MenuItem.Icon>
                 </MenuItem>
 
@@ -110,7 +110,7 @@
                 <MenuItem Header="Delete" Foreground="{StaticResource DarkBackgroundColor}"
                           Command="{Binding DataContext.DeleteEmailCommand, ElementName=WindowRoot}">
                     <MenuItem.Icon>
-                        <Image Width="16" Height="16" Source="/delete.webp"/>
+                        <Image Width="16" Height="16" Source="pack://application:,,,/Assets/delete.webp"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
