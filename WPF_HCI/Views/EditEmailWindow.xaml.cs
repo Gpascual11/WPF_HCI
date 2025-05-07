@@ -7,60 +7,72 @@ using Microsoft.Win32;
 
 namespace WPF_HCI
 {
-    /// <summary>
-    /// Interaction logic for EditEmailWindow.xaml
-    /// </summary>
     public partial class EditEmailWindow : Window
     {
+        // Reference to the shared ViewModel containing all emails and selection
         private readonly EmailViewModel _viewModel;
+
+        // Reference to the currently selected email, used for editing/viewing
         private Email? _currentEmail;
+
+        // List of attachment file paths for display and editing
         private List<string> attachmentPaths = new();
 
         public EditEmailWindow(EmailViewModel vm)
         {
             InitializeComponent();
             _viewModel = vm;
+
+            // (2f) Ensure this window stays above the main window
             Owner = Application.Current.MainWindow;
+
+            // (2d) Link DataContext for binding and listening to changes
             DataContext = _viewModel;
 
-            // Initial email
+            // (2b) Load selected email into fields on open
             UpdateUIFromEmail();
 
-            // Track changes to SelectedEmail
+            // (2d) React to changes in the selected email while the window is open
             _viewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
+        // (2d) Handle property changes in the ViewModel
         private void ViewModel_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(EmailViewModel.SelectedEmail))
             {
+                // When the selected email changes, refresh the UI
                 UpdateUIFromEmail();
             }
         }
 
         /// <summary>
-        /// Loads the current selected email into the input fields.
-        /// Disables editing if the message is not a draft.
+        /// (2b, 2d, 2g) Populate UI fields with the selected email's data.
+        /// Disable editing if the email is not a draft.
         /// </summary>
         private void UpdateUIFromEmail()
         {
             _currentEmail = _viewModel.SelectedEmail;
 
+            // If there's no email selected, clear the fields
             if (_currentEmail == null)
             {
                 ClearFields();
                 return;
             }
 
+            // (2b) Populate fields with data from the selected email
             SenderBox.Text = _currentEmail.Sender;
             RecipientsBox.Text = string.Join(", ", _currentEmail.Recipients);
             SubjectBox.Text = _currentEmail.Subject;
             ContentBox.Text = _currentEmail.Content;
+
+            // Load attachments
             attachmentPaths = new List<string>(_currentEmail.Attachments);
             AttachmentsList.ItemsSource = null;
             AttachmentsList.ItemsSource = attachmentPaths;
 
-            // Disable editing if not a draft
+            // (2g) Disable editing if email is not in the "Drafts" folder
             bool isEditable = _currentEmail.Folder.StartsWith("Drafts");
             SenderBox.IsReadOnly = !isEditable;
             RecipientsBox.IsReadOnly = !isEditable;
@@ -70,6 +82,7 @@ namespace WPF_HCI
             SaveButton.IsEnabled = isEditable;
         }
 
+        // Clear all input fields and reset attachments
         private void ClearFields()
         {
             SenderBox.Text = "";
@@ -80,6 +93,7 @@ namespace WPF_HCI
             attachmentPaths.Clear();
         }
 
+        // Handle the click to add attachments (opens file dialog)
         private void AddAttachments_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog
@@ -96,11 +110,13 @@ namespace WPF_HCI
                         attachmentPaths.Add(file);
                 }
 
+                // Refresh the attachments list UI
                 AttachmentsList.ItemsSource = null;
                 AttachmentsList.ItemsSource = attachmentPaths;
             }
         }
 
+        // Handle removal of an attachment from the list
         private void RemoveAttachment_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is string file)
@@ -111,20 +127,26 @@ namespace WPF_HCI
             }
         }
 
+        // Save changes made to the email back to the model
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentEmail == null)
                 return;
 
+            // (2b) Save updated fields into the selected email object
             _currentEmail.Sender = SenderBox.Text.Trim();
-            _currentEmail.Recipients = new List<string>(RecipientsBox.Text.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+            _currentEmail.Recipients = new List<string>(
+                RecipientsBox.Text.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            );
             _currentEmail.Subject = SubjectBox.Text.Trim();
             _currentEmail.Content = ContentBox.Text;
             _currentEmail.Attachments = new List<string>(attachmentPaths);
 
+            // Close the window after saving
             this.Close();
         }
 
+        // Close the window without saving
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

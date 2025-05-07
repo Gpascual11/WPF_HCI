@@ -7,68 +7,75 @@
         ResizeMode="NoResize"
         FontFamily="Segoe UI">
 
-    <!-- Import global styles -->
+    <!-- (Shared Style Resource) Load styling for light theme -->
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Reuses central AppStyles.xaml definitions -->
                 <ResourceDictionary Source="pack://application:,,,/Views/AppStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
+    <!-- Main Layout Grid -->
     <Grid Margin="10">
-        <!-- Layout -->
+        <!-- Define Rows: Inputs, Attachments, Buttons -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/> <!-- Sender -->
+            <RowDefinition Height="Auto"/> <!-- Recipients -->
+            <RowDefinition Height="Auto"/> <!-- Subject -->
+            <RowDefinition Height="Auto"/> <!-- Body -->
+            <RowDefinition Height="Auto"/> <!-- Attachments -->
+            <RowDefinition Height="Auto"/> <!-- Attachment List -->
+            <RowDefinition Height="*"/>    <!-- Buttons -->
         </Grid.RowDefinitions>
 
+        <!-- Define Columns for Labels and Inputs -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sender -->
+        <!-- (1a) Sender Field -->
         <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="From:"/>
         <TextBox x:Name="SenderBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
 
-        <!-- Recipients -->
+        <!-- (1a) Recipients Field -->
         <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="To:"/>
         <TextBox x:Name="RecipientsBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}"
                  ToolTip="Separate multiple recipients with commas" />
 
-        <!-- Subject -->
+        <!-- (1a) Subject Field -->
         <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Subject:"/>
         <TextBox x:Name="SubjectBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
 
-        <!-- Content -->
+        <!-- (1a) Body Field -->
         <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Body:" VerticalAlignment="Top"/>
-        <TextBox x:Name="ContentBox" Grid.Row="3" Grid.Column="1"
+        <TextBox x:Name="ContentBox"
+                 Grid.Row="3" Grid.Column="1"
                  Style="{StaticResource TextBoxStyleLight}"
                  AcceptsReturn="True"
                  Height="120"
                  TextWrapping="Wrap" />
 
-        <!-- Attachments -->
+        <!-- (1a) Attachments Label + Add Button -->
         <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Attachments:"/>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
             <TextBlock VerticalAlignment="Center" Text="Add files:" Style="{StaticResource LabelStyleLight}" Margin="0,0,5,0"/>
+            <!-- Clicking this triggers OpenFileDialog in code-behind -->
             <Button Content="📎 Add" Click="AddAttachment_Click"
                     Style="{StaticResource ButtonStylePrimaryLight}" Padding="5,0"/>
         </StackPanel>
 
-        <!-- Attachment List -->
+        <!-- (1a) Attachment File List -->
         <ItemsControl Grid.Row="5" Grid.Column="1" x:Name="AttachmentList" Margin="0,5,0,5">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
+                        <!-- Display icon and filename -->
                         <TextBlock Text="📄" Margin="0,0,5,0" Foreground="{StaticResource LightTextColor}" />
                         <TextBlock Text="{Binding}" Width="200" Foreground="{StaticResource LightTextColor}" />
+                        <!-- (1a) Remove button for each file -->
                         <Button Content="Remove" Margin="10,0,0,0" Click="RemoveAttachment_Click"
                                 Tag="{Binding}" Style="{StaticResource ButtonStyleSecondaryLight}"/>
                     </StackPanel>
@@ -76,10 +83,13 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <!-- Buttons -->
+        <!-- (1c) Action Buttons: Save as Draft + Send -->
         <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <!-- (1c) Save Draft button adds email to "Drafts" folder in code-behind -->
             <Button x:Name="SaveDraftBtn" Content="Save as Draft"
                     Style="{StaticResource ButtonStyleSecondaryLight}" Margin="0,0,5,0" Width="100" Click="SaveDraft_Click"/>
+            
+            <!-- (1c) Send button adds to current folder, with validation -->
             <Button x:Name="SendBtn" Content="Send"
                     Style="{StaticResource ButtonStylePrimaryLight}" Width="75" Click="Send_Click"/>
         </StackPanel>
