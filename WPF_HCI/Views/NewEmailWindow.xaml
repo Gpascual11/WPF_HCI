@@ -4,9 +4,20 @@
         Title="Compose New Email"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        FontFamily="Segoe UI">
+
+    <!-- Import global styles -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Views/AppStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid Margin="10">
-        <!-- Define rows -->
+        <!-- Layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,46 +28,49 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Define columns -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <!-- Sender -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,5,5" VerticalAlignment="Center">From:</TextBlock>
-        <TextBox x:Name="SenderBox" Grid.Row="0" Grid.Column="1" Margin="0,0,0,5"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="From:"/>
+        <TextBox x:Name="SenderBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
 
         <!-- Recipients -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Margin="0,0,5,5" VerticalAlignment="Center">To:</TextBlock>
-        <TextBox x:Name="RecipientsBox" Grid.Row="1" Grid.Column="1" Margin="0,0,0,5"
-                 ToolTip="Separate multiple recipients with commas"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="To:"/>
+        <TextBox x:Name="RecipientsBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}"
+                 ToolTip="Separate multiple recipients with commas" />
 
         <!-- Subject -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Margin="0,0,5,5" VerticalAlignment="Center">Subject:</TextBlock>
-        <TextBox x:Name="SubjectBox" Grid.Row="2" Grid.Column="1" Margin="0,0,0,5"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Subject:"/>
+        <TextBox x:Name="SubjectBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
 
         <!-- Content -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Margin="0,0,5,5" VerticalAlignment="Top">Body:</TextBlock>
-        <TextBox x:Name="ContentBox" Grid.Row="3" Grid.Column="1" Margin="0,0,0,5"
-                 AcceptsReturn="True" Height="120" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Body:" VerticalAlignment="Top"/>
+        <TextBox x:Name="ContentBox" Grid.Row="3" Grid.Column="1"
+                 Style="{StaticResource TextBoxStyleLight}"
+                 AcceptsReturn="True"
+                 Height="120"
+                 TextWrapping="Wrap" />
 
-        <!-- Attachment label + button -->
-        <TextBlock Grid.Row="4" Grid.Column="0" Margin="0,0,5,5" VerticalAlignment="Center">Attachments:</TextBlock>
+        <!-- Attachments -->
+        <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Attachments:"/>
         <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-            <TextBlock VerticalAlignment="Center" Text="Add files:" Margin="0,0,5,0"/>
-            <Button Content="📎 Add" Click="AddAttachment_Click" Padding="5,0" />
+            <TextBlock VerticalAlignment="Center" Text="Add files:" Style="{StaticResource LabelStyleLight}" Margin="0,0,5,0"/>
+            <Button Content="📎 Add" Click="AddAttachment_Click"
+                    Style="{StaticResource ButtonStylePrimaryLight}" Padding="5,0"/>
         </StackPanel>
 
-        <!-- Attachment list -->
+        <!-- Attachment List -->
         <ItemsControl Grid.Row="5" Grid.Column="1" x:Name="AttachmentList" Margin="0,5,0,5">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="0,2">
-                        <TextBlock Text="📄" Margin="0,0,5,0"/>
-                        <TextBlock Text="{Binding}" Width="200"/>
-                        <Button Content="Remove" Margin="10,0,0,0" Click="RemoveAttachment_Click" Tag="{Binding}"/>
+                        <TextBlock Text="📄" Margin="0,0,5,0" Foreground="{StaticResource LightTextColor}" />
+                        <TextBlock Text="{Binding}" Width="200" Foreground="{StaticResource LightTextColor}" />
+                        <Button Content="Remove" Margin="10,0,0,0" Click="RemoveAttachment_Click"
+                                Tag="{Binding}" Style="{StaticResource ButtonStyleSecondaryLight}"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -64,8 +78,10 @@
 
         <!-- Buttons -->
         <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-            <Button x:Name="SaveDraftBtn" Content="Save as Draft" Margin="0,0,5,0" Width="100" Click="SaveDraft_Click"/>
-            <Button x:Name="SendBtn" Content="Send" Width="75" Click="Send_Click"/>
+            <Button x:Name="SaveDraftBtn" Content="Save as Draft"
+                    Style="{StaticResource ButtonStyleSecondaryLight}" Margin="0,0,5,0" Width="100" Click="SaveDraft_Click"/>
+            <Button x:Name="SendBtn" Content="Send"
+                    Style="{StaticResource ButtonStylePrimaryLight}" Width="75" Click="Send_Click"/>
         </StackPanel>
     </Grid>
 </Window>
