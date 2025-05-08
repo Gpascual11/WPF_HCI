@@ -45,6 +45,10 @@ namespace WPF_HCI
             if (!ValidateInputs(out var senderAddr, out var recipients, out var subject, out var body))
                 return;
 
+            // Map current folder to the corresponding Sent folder (e.g., Inbox1 → Sent1)
+            string suffix = new string(_currentFolder.Where(char.IsDigit).ToArray());
+            var sentFolder = $"Sent{suffix}";
+
             var email = new Email(
                 senderAddr,
                 recipients,
@@ -53,27 +57,45 @@ namespace WPF_HCI
                 false,
                 new List<string>(_attachments),
                 DateTime.Now,
-                _currentFolder // (1c) Add to currently selected folder
+                sentFolder
             );
 
             _vm.Emails.Add(email);
 
-            // Add to filtered list if it matches the currently viewed folder
-            if (email.Folder == _currentFolder)
+            // Show in view only if we're already in the Sent folder
+            if (_vm.CurrentFolder == sentFolder)
                 _vm.FilteredEmails.Add(email);
 
             Close(); // Exit after sending
         }
+
 
         /// <summary>
         /// (1c) Handler for saving as draft — adds email to a Drafts folder.
         /// </summary>
         private void SaveDraft_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidateInputs(out var senderAddr, out var recipients, out var subject, out var body))
-                return;
+            string senderAddr = SenderBox.Text.Trim();
+            List<string> recipients = RecipientsBox.Text
+                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
+                .ToList();
+            string subject = SubjectBox.Text.Trim();
+            string body = ContentBox.Text;
 
-            // Map "Inbox1" → "Drafts1", etc.
+            // If all fields are empty and there are no attachments, don't save
+            if (string.IsNullOrEmpty(senderAddr) &&
+                recipients.Count == 0 &&
+                string.IsNullOrEmpty(subject) &&
+                string.IsNullOrEmpty(body) &&
+                _attachments.Count == 0)
+            {
+                MessageBox.Show("Draft not saved because it is completely empty.",
+                                "Empty Draft", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // Map current folder to appropriate Drafts folder (e.g., Inbox1 → Drafts1)
             string suffix = new string(_currentFolder.Where(char.IsDigit).ToArray());
             var draftsFolder = $"Drafts{suffix}";
 
@@ -90,12 +112,12 @@ namespace WPF_HCI
 
             _vm.Emails.Add(email);
 
-            // Show in view if the user is already in that draft folder
             if (_vm.CurrentFolder == draftsFolder)
                 _vm.FilteredEmails.Add(email);
 
             Close(); // Exit after saving
         }
+
 
         /// <summary>
         /// (1a) Adds files to the attachment list using OpenFileDialog.

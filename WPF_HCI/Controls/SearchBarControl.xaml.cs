@@ -39,7 +39,7 @@ namespace WPF_HCI
             if (SearchBox.Text == "Search...")
             {
                 SearchBox.Text = "";
-                SearchBox.Foreground = Brushes.Black;
+                SearchBox.Foreground = Brushes.White;
             }
         }
 
@@ -51,7 +51,7 @@ namespace WPF_HCI
             if (string.IsNullOrWhiteSpace(SearchBox.Text))
             {
                 SearchBox.Text = "Search...";
-                SearchBox.Foreground = Brushes.Gray;
+                SearchBox.Foreground = Brushes.White;
             }
         }
 

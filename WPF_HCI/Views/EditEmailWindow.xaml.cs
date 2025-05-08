@@ -80,6 +80,7 @@ namespace WPF_HCI
             ContentBox.IsReadOnly = !isEditable;
             AddAttachmentBtn.IsEnabled = isEditable;
             SaveButton.IsEnabled = isEditable;
+            SendButton.IsEnabled = isEditable; 
         }
 
         // Clear all input fields and reset attachments
@@ -145,6 +146,69 @@ namespace WPF_HCI
             // Close the window after saving
             this.Close();
         }
+
+        private void SendButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentEmail == null)
+                return;
+
+            // Validate inputs
+            var senderAddr = SenderBox.Text.Trim();
+            var subject = SubjectBox.Text.Trim();
+            var body = ContentBox.Text;
+            var recipients = RecipientsBox.Text
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(r => r.Trim())
+                .ToList();
+
+            if (string.IsNullOrEmpty(senderAddr) || !IsValidEmail(senderAddr))
+            {
+                MessageBox.Show("Invalid sender address.\nPlease enter a valid email (e.g. user@domain.com).",
+                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (recipients.Count == 0 || recipients.Any(r => !IsValidEmail(r)))
+            {
+                MessageBox.Show("Invalid recipient list.\nEnter one or more valid emails, separated by commas.",
+                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(subject))
+            {
+                MessageBox.Show("Subject cannot be empty.",
+                                "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // All valid → update email and move to "SentX" folder
+            _currentEmail.Sender = senderAddr;
+            _currentEmail.Recipients = recipients;
+            _currentEmail.Subject = subject;
+            _currentEmail.Content = body;
+            _currentEmail.Attachments = new List<string>(attachmentPaths);
+
+            // Replace "DraftsX" with "SentX"
+            string suffix = new string(_currentEmail.Folder.Where(char.IsDigit).ToArray());
+            string sentFolder = $"Sent{suffix}";
+            _currentEmail.Folder = sentFolder;
+
+            // Refresh filtered list if currently in the Sent folder
+            if (_viewModel.CurrentFolder == sentFolder && !_viewModel.FilteredEmails.Contains(_currentEmail))
+                _viewModel.FilteredEmails.Add(_currentEmail);
+            else if (_viewModel.CurrentFolder.StartsWith("Drafts"))
+                _viewModel.FilterEmailsByFolder(_viewModel.CurrentFolder); // Refresh list if removing it from view
+
+            this.Close();
+        }
+
+        private static bool IsValidEmail(string email)
+        {
+            try { _ = new System.Net.Mail.MailAddress(email); return true; }
+            catch { return false; }
+        }
+
 
         // Close the window without saving
         private void CloseButton_Click(object sender, RoutedEventArgs e)

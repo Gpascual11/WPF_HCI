@@ -66,6 +66,12 @@ namespace WPF_HCI
         }
 
         /// <summary>
+        /// Returns all recipients as a single comma-separated string for UI display.
+        /// </summary>
+        public string RecipientsAsString => string.Join(", ", Recipients);
+
+
+        /// <summary>
         /// Gets or sets the subject of the email.
         /// </summary>
         public string Subject

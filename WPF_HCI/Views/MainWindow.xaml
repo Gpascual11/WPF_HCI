@@ -102,34 +102,192 @@
         <!-- (c) Main Content Layout -->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/> <!-- Sidebar -->
-                <ColumnDefinition Width="4*"/> <!-- Email List -->
+                <ColumnDefinition Width="110"/> <!-- Sidebar -->
+                <ColumnDefinition Width="5*"/> <!-- Email List -->
                 <ColumnDefinition Width="5*"/> <!-- Email Details -->
             </Grid.ColumnDefinitions>
 
-            <!-- (c1) Sidebar TreeView -->
             <TreeView Name="FolderTree"
-                      Grid.Column="0"
-                      Margin="5"
-                      Style="{StaticResource TreeViewStyleSidebar}"
-                      SelectedItemChanged="FolderTree_SelectedItemChanged">
+          Grid.Column="0"
+          Margin="5"
+          Style="{StaticResource TreeViewStyleSidebar}"
+          SelectedItemChanged="FolderTree_SelectedItemChanged">
                 <TreeView.ItemContainerStyle>
                     <StaticResource ResourceKey="TreeViewItemStyleSidebar"/>
                 </TreeView.ItemContainerStyle>
 
-                <TreeViewItem Header="Mailbox 1">
-                    <TreeViewItem Header="Inbox" Tag="Inbox1"/>
-                    <TreeViewItem Header="Sent" Tag="Sent1"/>
-                    <TreeViewItem Header="Drafts" Tag="Drafts1"/>
-                    <TreeViewItem Header="Trash" Tag="Trash1"/>
+                <TreeViewItem Tag="Mailbox1">
+                    <TreeViewItem.Header>
+                        <TextBlock Text="Mailbox 1">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TreeViewItem.Header>
+
+                    <TreeViewItem Tag="Inbox1">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Inbox">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Sent1">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Sent">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Drafts1">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Drafts">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Trash1">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Trash">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
                 </TreeViewItem>
-                <TreeViewItem Header="Mailbox 2">
-                    <TreeViewItem Header="Inbox" Tag="Inbox2"/>
-                    <TreeViewItem Header="Sent" Tag="Sent2"/>
-                    <TreeViewItem Header="Drafts" Tag="Drafts2"/>
-                    <TreeViewItem Header="Trash" Tag="Trash2"/>
+
+                <TreeViewItem Tag="Mailbox2">
+                    <TreeViewItem.Header>
+                        <TextBlock Text="Mailbox 2">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TreeViewItem.Header>
+
+                    <TreeViewItem Tag="Inbox2">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Inbox">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Sent2">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Sent">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Drafts2">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Drafts">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
+
+                    <TreeViewItem Tag="Trash2">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="Trash">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=TreeViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Foreground" Value="Black"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </TreeViewItem.Header>
+                    </TreeViewItem>
                 </TreeViewItem>
             </TreeView>
+
+
 
             <!-- (c2) Email List Panel -->
             <Grid Grid.Column="1" Margin="5">
@@ -172,7 +330,11 @@
                             <Border Style="{StaticResource EmailBorderStyle}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Subject}" Style="{StaticResource EmailSubjectStyle}" />
-                                    <TextBlock Text="{Binding Sender}" Style="{StaticResource EmailSenderStyle}" />
+                                    <TextBlock Style="{StaticResource EmailSenderStyle}">
+                                         <Run Text="Sender: " />
+                                           <Run Text="{Binding Sender}" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding RecipientsAsString, StringFormat='Recipient/s: {0}'}" Style="{StaticResource EmailSenderStyle}" />
                                     <TextBlock Text="{Binding DateSent, StringFormat='{}{0:MMM dd, yyyy}'}"
            Style="{StaticResource EmailDateStyle}" />
                                 </StackPanel>
@@ -189,8 +351,8 @@
                 <StackPanel>
                     <TextBlock Text="{Binding SelectedEmail.Subject}" 
                                Style="{StaticResource TextBlockStyleDetailsSubject}" />
-                    <TextBlock Text="{Binding SelectedEmail.Sender}" 
-                               Style="{StaticResource TextBlockStyleDetailsSender}" />
+                    <TextBlock Text="{Binding SelectedEmail.Sender, StringFormat='Sender: {0}'}" Style="{StaticResource TextBlockStyleDetailsSender}" />
+                    <TextBlock Text="{Binding SelectedEmail.RecipientsAsString, StringFormat='To: {0}'}" Style="{StaticResource TextBlockStyleDetailsSender}" />
                     <TextBlock Text="{Binding SelectedEmail.DateSent, StringFormat='{}{0:MMM dd, yyyy}'}" 
                                Style="{StaticResource TextBlockStyleDetailsDate}" />
                     <TextBlock Text="{Binding SelectedEmail.Content}" 

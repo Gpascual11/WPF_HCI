@@ -1,26 +1,10 @@
-﻿<!-- EditEmailWindow.xaml -->
-<!--
-    This window provides UI for editing a selected email message.
-    It supports loading current email data, controlling editability,
-    managing attachments, and saving changes back to the view model.
-
-    Spec coverage:
-    2a: This window only appears when an email is selected (controlled in MainWindow.xaml.cs)
-    2b: Fields are populated with the selected email
-    2c: Opened in non-modal mode
-    2d: Live updates if the selected message changes
-    2e: Only one instance allowed (checked in MainWindow.xaml.cs)C
-    2f: Always on top of MainWindow via Topmost + Owner
-    2g: Non-draft messages are set to read-only
--->
-
-<Window x:Class="WPF_HCI.EditEmailWindow"
+﻿<Window x:Class="WPF_HCI.EditEmailWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Edit Email"
         Height="450" Width="600"
         WindowStartupLocation="CenterOwner"   
-        Topmost="True"                       
+        Topmost="True"
         ResizeMode="CanResize"
         FontFamily="Segoe UI">
 
@@ -33,89 +17,90 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <!-- Main layout grid -->
-    <Grid Margin="15">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>   <!-- Row 0: Sender -->
-            <RowDefinition Height="Auto"/>   <!-- Row 1: Recipients -->
-            <RowDefinition Height="Auto"/>   <!-- Row 2: Subject -->
-            <RowDefinition Height="*"/>      <!-- Row 3: Body (fills remaining space) -->
-            <RowDefinition Height="Auto"/>   <!-- Row 4: Attachments -->
-            <RowDefinition Height="Auto"/>   <!-- Row 5: Buttons -->
-        </Grid.RowDefinitions>
+    <!-- Outer layout with dark background -->
+    <Grid Background="{StaticResource DarkBackgroundColor}" Margin="0">
+        <!-- Inner content layout -->
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/> <!-- Column 0: Labels -->
-            <ColumnDefinition Width="*"/>    <!-- Column 1: Inputs -->
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <!-- Sender input -->
-        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="From:"/>
-        <TextBox x:Name="SenderBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
+            <!-- Sender input -->
+            <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="From:"/>
+            <TextBox x:Name="SenderBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
 
-        <!-- Recipients input -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="To:"/>
-        <TextBox x:Name="RecipientsBox" Grid.Row="1" Grid.Column="1"
-                 Style="{StaticResource TextBoxStyleLight}"
-                 ToolTip="Separate with commas" />
+            <!-- Recipients input -->
+            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="To:"/>
+            <TextBox x:Name="RecipientsBox" Grid.Row="1" Grid.Column="1"
+                     Style="{StaticResource TextBoxStyle}"
+                     ToolTip="Separate with commas" />
 
-        <!-- Subject input -->
-        <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="Subject:"/>
-        <TextBox x:Name="SubjectBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyleLight}" />
+            <!-- Subject input -->
+            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="Subject:"/>
+            <TextBox x:Name="SubjectBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBoxStyle}" />
 
-        <!-- Email body -->
-        <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyleLight}" Text="Body:" VerticalAlignment="Top"/>
-        <TextBox x:Name="ContentBox"
-                 Grid.Row="3" Grid.Column="1"
-                 Style="{StaticResource TextBoxStyleLight}"
-                 AcceptsReturn="True" TextWrapping="Wrap"
-                 VerticalScrollBarVisibility="Auto"
-                 Height="120" />
+            <!-- Email body -->
+            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="Body:" VerticalAlignment="Top" Margin="2,37,3,0"/>
+            <TextBox x:Name="ContentBox"
+                     Grid.Row="3" Grid.Column="1"
+                     Style="{StaticResource TextBoxStyle}"
+                     AcceptsReturn="True" TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Height="120" />
 
-        <!-- Attachments section -->
-        <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Vertical" Margin="0,10,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Attachments:" Style="{StaticResource TextBlockStyleDetailsAttachmentHeaderLight}" />
-                <Button x:Name="AddAttachmentBtn" Content="+" Width="30" Height="25"
-                        Style="{StaticResource ButtonStyleSecondaryLight}" Click="AddAttachments_Click"/>
+            <!-- Attachments section -->
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Vertical" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <TextBlock Text="Attachments:" Style="{StaticResource TextBlockStyleDetailsAttachmentHeader}" VerticalAlignment="Center"/>
+                    <Button x:Name="AddAttachmentBtn" Content="+" Width="30" Height="25"
+                            Style="{StaticResource ButtonStylePrimary}" Click="AddAttachments_Click"/>
+                </StackPanel>
+
+                <!-- List of attachments -->
+                <ItemsControl x:Name="AttachmentsList" Margin="0,5,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
+                                <TextBlock Text="📎" FontSize="14" Margin="0,0,5,0" Foreground="White"/>
+                                <TextBlock Text="{Binding}" Style="{StaticResource TextBlockStyleAttachmentItem}"
+                                           Width="400" TextTrimming="CharacterEllipsis"/>
+                                <Button Content="✖"
+                                        Width="25" Height="20" Margin="5,0,0,0"
+                                        FontSize="14"
+                                        FontFamily="Segoe UI Symbol"
+                                        Foreground="White"
+                                        Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Tag="{Binding}"
+                                        ToolTip="Remove file"
+                                        Click="RemoveAttachment_Click"
+                                        Style="{StaticResource ButtonStylePrimary}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
 
-            <!-- List of attachments -->
-            <ItemsControl x:Name="AttachmentsList" Margin="0,5,0,0">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,3">
-                            <!-- Icon -->
-                            <TextBlock Text="📎" FontSize="14" Margin="0,0,5,0"/>
-                            <!-- Filename text -->
-                            <TextBlock Text="{Binding}" Style="{StaticResource TextBlockStyleAttachmentItemLight}"
-                                       Width="400" TextTrimming="CharacterEllipsis"/>
-                            <!-- Remove button (✖) -->
-                            <Button Content="✖"
-                                    Width="25" Height="20" Margin="5,0,0,0"
-                                    FontSize="14"
-                                    FontFamily="Segoe UI Symbol"
-                                    Foreground="Black"
-                                    Background="{x:Null}"
-                                    BorderBrush="{x:Null}"
-                                    Tag="{Binding}"
-                                    ToolTip="Remove file"
-                                    Click="RemoveAttachment_Click"
-                                    Style="{StaticResource ButtonStyleSecondaryLight}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
-
-        <!-- Action buttons -->
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <!-- Save: updates model and closes -->
-            <Button x:Name="SaveButton" Content="Save Changes"
-                    Style="{StaticResource ButtonStyleSecondaryLight}" Width="110" Margin="0,0,10,0"
-                    Click="SaveButton_Click"/>
-            <!-- Close: just exits -->
-            <Button Content="Close" Width="75" Style="{StaticResource ButtonStylePrimaryLight}" Click="CloseButton_Click"/>
-        </StackPanel>
+            <!-- Action buttons -->
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button x:Name="SaveButton" Content="Save Changes"
+                        Style="{StaticResource ButtonStylePrimary}" Width="91" Margin="0,0,10,0"
+                        Click="SaveButton_Click" Height="23"/>
+                <Button x:Name="SendButton" Content="Send"
+                        Style="{StaticResource ButtonStylePrimary}" Width="69" Margin="0,0,10,0"
+                        Click="SendButton_Click" Height="23"/>
+                <Button Content="Cancel" Width="76" Style="{StaticResource ButtonStylePrimary}" Click="CloseButton_Click" Height="23"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

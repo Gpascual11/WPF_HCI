@@ -316,15 +316,41 @@ namespace WPF_HCI
         /// </summary>
         private void DeleteEmail()
         {
-            if (SelectedEmail != null)
+            if (SelectedEmail == null)
+                return;
+
+            string currentFolder = SelectedEmail.Folder;
+
+            if (currentFolder.StartsWith("Trash"))
             {
+                // Permanently delete the email
                 Emails.Remove(SelectedEmail);
                 FilteredEmails.Remove(SelectedEmail);
-                SelectedEmail = null;
-                OnPropertyChanged(nameof(Emails));
-                OnPropertyChanged(nameof(FilteredEmails));
             }
+            else
+            {
+                // Move to TrashX (preserving mailbox number)
+                string suffix = new string(currentFolder.Where(char.IsDigit).ToArray());
+                string trashFolder = $"Trash{suffix}";
+
+                SelectedEmail.Folder = trashFolder;
+
+                // Remove from current filtered view
+                FilteredEmails.Remove(SelectedEmail);
+
+                // Only show in Trash if that's the current view
+                if (CurrentFolder == trashFolder)
+                {
+                    FilteredEmails.Add(SelectedEmail);
+                }
+            }
+
+            SelectedEmail = null;
+
+            OnPropertyChanged(nameof(Emails));
+            OnPropertyChanged(nameof(FilteredEmails));
         }
+
 
         /// <summary>
         /// Determines whether the delete command can execute.
