@@ -15,7 +15,7 @@ To clone and run this project locally, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Gpascual11/WPF_HCI.git](https://github.com/Gpascual11/WPF_HCI.git)
+    git clone [https://github.com/Gpascual11/WPF_HCI.git]
     ```
 2.  **Open the Project:**
     Open the solution (`.sln`) with Visual Studio
