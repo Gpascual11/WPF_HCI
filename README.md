@@ -1,4 +1,4 @@
-# WPF_HCI: My Sports App
+# WPF_HCI: Email Example
 
 This repository contains the development of a Human-Computer Interaction (HCI) project implemented using Windows Presentation Foundation (WPF) and C#.
 
